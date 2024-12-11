@@ -1,0 +1,45 @@
+package database;
+
+import java.sql.*;
+
+public class DatabaseManager {
+    // Replace these with your actual database details
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/recipess";
+    private static final String USER = "root";
+    private static final String PASSWORD = "123456";
+
+    private static Connection connection = null;
+
+    // Initialize connection
+    public static void connect() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to database successfully!");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Database driver not found", e);
+        }
+    }
+
+    // Close connection
+    public static void disconnect() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing connection: " + e.getMessage());
+        }
+    }
+
+    // Execute a query that returns data (SELECT)
+    public static ResultSet executeQuery(String query) throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connect();
+        }
+        Statement statement = connection.createStatement();
+        return statement.executeQuery(query);
+    }
+
+}
