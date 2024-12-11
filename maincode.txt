@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.Optional;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
@@ -39,20 +38,33 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ImageView mainImage = new ImageView(new Image("file:///C:/Users/tonyy/OneDrive/Desktop/recipe/main4.png"));
+        ImageView mainImage = new ImageView(new Image("file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\main4.png"));
+
         mainImage.fitWidthProperty().bind(primaryStage.widthProperty());
         mainImage.fitHeightProperty().bind(primaryStage.heightProperty());
 
         Button getStartedButton = new Button("Let's Get Started!");
         getStartedButton.setStyle("-fx-font-size: 25px; -fx-padding: 20 40; -fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-border-radius: 5; -fx-background-radius: 5;");
+
+// Add hover effect
+        getStartedButton.setOnMouseEntered(event -> {
+            getStartedButton.setStyle("-fx-font-size: 25px; -fx-padding: 20 40; -fx-background-color: #F5C89C; -fx-text-fill: black; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;");
+        });
+        getStartedButton.setOnMouseExited(event -> {
+            getStartedButton.setStyle("-fx-font-size: 25px; -fx-padding: 20 40; -fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-border-radius: 5; -fx-background-radius: 5;");
+        });
+
         StackPane.setAlignment(getStartedButton, Pos.CENTER);
+
+
+
 
         StackPane firstPageRoot = new StackPane();
         firstPageRoot.getChildren().addAll(mainImage, getStartedButton);
 
         Scene firstScene = new Scene(firstPageRoot, 800, 500);
 
-        ImageView secondPageImage = new ImageView(new Image("file:///C:/Users/tonyy/OneDrive/Desktop/recipe/firstsection5.png"));
+        ImageView secondPageImage = new ImageView(new Image("file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\firstsection5.png"));
         secondPageImage.fitWidthProperty().bind(primaryStage.widthProperty());
         secondPageImage.fitHeightProperty().bind(primaryStage.heightProperty());
 
@@ -62,12 +74,31 @@ public class HelloApplication extends Application {
         Button addButton = new Button("Add+");
         Button myRecipeButton = new Button("My Recipe");
 
+
         String buttonStyle = "-fx-font-size: 20px; -fx-padding: 10; -fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-border-radius: 7; -fx-background-radius: 5;";
         saltyButton.setStyle(buttonStyle);
         sugarButton.setStyle(buttonStyle);
         cocktailsButton.setStyle(buttonStyle);
         addButton.setStyle(buttonStyle);
         myRecipeButton.setStyle(buttonStyle);
+
+        saltyButton.setOnMouseEntered(e -> saltyButton.setStyle(buttonStyle + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-scale-x: 1.1; -fx-scale-y: 1.1;"));
+        saltyButton.setOnMouseExited(e -> saltyButton.setStyle(buttonStyle));
+
+        sugarButton.setOnMouseEntered(e -> sugarButton.setStyle(buttonStyle + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-scale-x: 1.1; -fx-scale-y: 1.1;"));
+        sugarButton.setOnMouseExited(e -> sugarButton.setStyle(buttonStyle));
+
+        cocktailsButton.setOnMouseEntered(e -> cocktailsButton.setStyle(buttonStyle + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-scale-x: 1.1; -fx-scale-y: 1.1;"));
+        cocktailsButton.setOnMouseExited(e -> cocktailsButton.setStyle(buttonStyle));
+
+        addButton.setOnMouseEntered(e -> addButton.setStyle(buttonStyle + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-scale-x: 1.1; -fx-scale-y: 1.1;"));
+        addButton.setOnMouseExited(e -> addButton.setStyle(buttonStyle));
+
+        myRecipeButton.setOnMouseEntered(e -> myRecipeButton.setStyle(buttonStyle + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-scale-x: 1.1; -fx-scale-y: 1.1;"));
+        myRecipeButton.setOnMouseExited(e -> myRecipeButton.setStyle(buttonStyle));
+
+
+
 
         double buttonWidth = 250;
         saltyButton.setPrefWidth(buttonWidth);
@@ -115,24 +146,37 @@ public class HelloApplication extends Application {
 
         primaryStage.setScene(firstScene);
         primaryStage.setTitle("Recipe App");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
     private Scene createRecipeDetailScene(String recipeName, String imagePath, Stage primaryStage, Scene previousScene) {
         VBox root = new VBox(20);
-        root.setStyle("-fx-padding: 20;");
-        root.setAlignment(Pos.TOP_CENTER);
+        root.setStyle("-fx-padding: 20; -fx-background-color: #FFFAF0; -fx-spacing: 20;");
 
+        // Create the back button
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-font-size: 16px;");
+        backButton.setOnAction(e -> primaryStage.setScene(previousScene));
+
+        // Header container with back button on the left
+        HBox header = new HBox();
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.getChildren().add(backButton);
+
+        // Centered image and title
         ImageView recipeImage = new ImageView(new Image(imagePath));
-        recipeImage.setFitWidth(300);
+        recipeImage.setFitWidth(400);
         recipeImage.setPreserveRatio(true);
+        recipeImage.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 0);");
 
         Label titleLabel = new Label(recipeName);
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        titleLabel.setStyle("-fx-font-size: 35px; -fx-font-weight: bold; -fx-text-fill: #6A4C37;");
 
-        // Fetch recipe details from database
+        VBox centeredContent = new VBox(10, recipeImage, titleLabel);
+        centeredContent.setAlignment(Pos.CENTER);
+
         try {
-            // Get recipe_id
             ResultSet recipeRS = DatabaseManager.executeQuery(
                     "SELECT recipe_id FROM Recipe WHERE name LIKE '%" + recipeName + "%'"
             );
@@ -140,23 +184,13 @@ public class HelloApplication extends Application {
             if (recipeRS.next()) {
                 int recipeId = recipeRS.getInt("recipe_id");
 
-                // Ingredients Section
                 VBox ingredientsSection = createIngredientsSection(recipeId);
-
-                // Instructions Section
                 VBox instructionsSection = createInstructionsSection(recipeId);
-
-                // Nutritional Section
                 VBox nutritionalSection = createNutritionalSection(recipeId);
 
-                Button backButton = new Button("Back");
-                backButton.setStyle("-fx-background-color: #F7D9BC; -fx-text-fill: black;");
-                backButton.setOnAction(e -> primaryStage.setScene(previousScene));
-
                 root.getChildren().addAll(
-                        backButton,
-                        titleLabel,
-                        recipeImage,
+                        header,
+                        centeredContent,
                         ingredientsSection,
                         instructionsSection,
                         nutritionalSection
@@ -172,10 +206,13 @@ public class HelloApplication extends Application {
         return new Scene(scrollPane, 850, 500);
     }
 
+
     private VBox createIngredientsSection(int recipeId) throws SQLException {
         VBox ingredientsSection = new VBox(10);
+        ingredientsSection.setStyle("-fx-background-color: #FFF9F2; -fx-padding: 20; -fx-border-color: #D4A373; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;");
+
         Label ingredientsTitle = new Label("Ingredients");
-        ingredientsTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        ingredientsTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #6A4C37;");
 
         VBox ingredientsList = new VBox(5);
         ResultSet ingredientsRS = DatabaseManager.executeQuery(
@@ -183,12 +220,14 @@ public class HelloApplication extends Application {
         );
 
         while (ingredientsRS.next()) {
-            String ingredient = String.format("• %s %s %s",
+            String ingredient = String.format("• %.2f %s %s",
                     ingredientsRS.getDouble("quantity"),
                     ingredientsRS.getString("unit"),
                     ingredientsRS.getString("name")
             );
-            ingredientsList.getChildren().add(new Label(ingredient));
+            Label ingredientLabel = new Label(ingredient);
+            ingredientLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #6A4C37;");
+            ingredientsList.getChildren().add(ingredientLabel);
         }
 
         ingredientsSection.getChildren().addAll(ingredientsTitle, ingredientsList);
@@ -197,13 +236,14 @@ public class HelloApplication extends Application {
 
     private VBox createInstructionsSection(int recipeId) throws SQLException {
         VBox instructionsSection = new VBox(10);
+        instructionsSection.setStyle("-fx-background-color: #E6F7FF; -fx-padding: 20; -fx-border-color: #4A90E2; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;");
+
         Label instructionsTitle = new Label("Instructions");
-        instructionsTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        instructionsTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #245780;");
 
         VBox instructionsList = new VBox(5);
         ResultSet instructionsRS = DatabaseManager.executeQuery(
-                "SELECT step_number, instruction_text FROM Instruction WHERE recipe_id = " + recipeId +
-                        " ORDER BY step_number"
+                "SELECT step_number, instruction_text FROM Instruction WHERE recipe_id = " + recipeId + " ORDER BY step_number"
         );
 
         while (instructionsRS.next()) {
@@ -211,7 +251,9 @@ public class HelloApplication extends Application {
                     instructionsRS.getInt("step_number"),
                     instructionsRS.getString("instruction_text")
             );
-            instructionsList.getChildren().add(new Label(instruction));
+            Label instructionLabel = new Label(instruction);
+            instructionLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #245780;");
+            instructionsList.getChildren().add(instructionLabel);
         }
 
         instructionsSection.getChildren().addAll(instructionsTitle, instructionsList);
@@ -220,31 +262,43 @@ public class HelloApplication extends Application {
 
     private VBox createNutritionalSection(int recipeId) throws SQLException {
         VBox nutritionalSection = new VBox(10);
+        nutritionalSection.setStyle("-fx-background-color: #F7F3F3; -fx-padding: 20; -fx-border-color: #E37A7A; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;");
+
         Label nutritionalTitle = new Label("Nutritional Facts");
-        nutritionalTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        nutritionalTitle.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #A83333;");
+
+        HBox nutritionBoxes = new HBox(10); // Container for individual boxes
+        nutritionBoxes.setAlignment(Pos.CENTER);
+        nutritionBoxes.setStyle("-fx-padding: 10;");
 
         ResultSet nutritionRS = DatabaseManager.executeQuery(
-                "SELECT calories, protein, carbs, sodium, fiber, fat FROM NutritionInfo " +
-                        "WHERE recipe_id = " + recipeId
+                "SELECT calories, protein, carbs, sodium, fiber, fat FROM NutritionInfo WHERE recipe_id = " + recipeId
         );
 
-        VBox nutritionInfo = new VBox(5);
         if (nutritionRS.next()) {
             String[] nutritionLabels = {
-                    String.format("Calories: %d", nutritionRS.getInt("calories")),
-                    String.format("Protein: %.1fg", nutritionRS.getDouble("protein")),
-                    String.format("Carbohydrates: %.1fg", nutritionRS.getDouble("carbs")),
-                    String.format("Sodium: %dmg", nutritionRS.getInt("sodium")),
-                    String.format("Fiber: %.1fg", nutritionRS.getDouble("fiber")),
-                    String.format("Fat: %.1fg", nutritionRS.getDouble("fat"))
+                    String.format("Calories\n%d kcal", nutritionRS.getInt("calories")),
+                    String.format("Protein\n%.1f g", nutritionRS.getDouble("protein")),
+                    String.format("Carbohydrates\n%.1f g", nutritionRS.getDouble("carbs")),
+                    String.format("Sodium\n%d mg", nutritionRS.getInt("sodium")),
+                    String.format("Fiber\n%.1f g", nutritionRS.getDouble("fiber")),
+                    String.format("Fat\n%.1f g", nutritionRS.getDouble("fat"))
             };
 
             for (String label : nutritionLabels) {
-                nutritionInfo.getChildren().add(new Label(label));
+                VBox nutritionBox = new VBox();
+                nutritionBox.setStyle("-fx-background-color: #FFF9F2; -fx-padding: 10; -fx-border-color: #D4A373; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;");
+                nutritionBox.setAlignment(Pos.CENTER);
+
+                Label nutritionLabel = new Label(label);
+                nutritionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #6A4C37; -fx-text-alignment: center;");
+                nutritionBox.getChildren().add(nutritionLabel);
+
+                nutritionBoxes.getChildren().add(nutritionBox);
             }
         }
 
-        nutritionalSection.getChildren().addAll(nutritionalTitle, nutritionInfo);
+        nutritionalSection.getChildren().addAll(nutritionalTitle, nutritionBoxes);
         return nutritionalSection;
     }
 
@@ -278,18 +332,19 @@ public class HelloApplication extends Application {
         saltyPageRoot.setStyle("-fx-padding: 10;");
 
         String[][] recipes = {
-                {"Omlette", "file:///C:/Users/tonyy/OneDrive/Desktop/food/1.jpg"},
-                {"Avocado Toast", "file:///C:/Users/tonyy/OneDrive/Desktop/food/3.jpg"},
-                {"Kibbeh", "file:///C:/Users/tonyy/OneDrive/Desktop/food/5.jpg"},
-                {"Burger", "file:///C:/Users/tonyy/OneDrive/Desktop/food/6.jpg"},
-                {"Sushi", "file:///C:/Users/tonyy/OneDrive/Desktop/food/7.jpg"},
-                {"Tabbouleh", "file:///C:/Users/tonyy/OneDrive/Desktop/food/8.jpg"},
-                {"Riz Au Djej", "file:///C:/Users/tonyy/OneDrive/Desktop/food/9.jpg"},
-                {"Grape Leaves", "file:///C:/Users/tonyy/OneDrive/Desktop/food/14.jpg"},
-                {"Mloukhiye", "file:///C:/Users/tonyy/OneDrive/Desktop/food/15.jpg"},
-                {"Zucchini", "file:///C:/Users/tonyy/OneDrive/Desktop/food/16.jpg"},
-                {"Cheese Rolls", "file:///C:/Users/tonyy/OneDrive/Desktop/food/19.jpg"},
-                {"Spicy Potato", "file:///C:/Users/tonyy/OneDrive/Desktop/food/20.jpg"}
+                {"Omlette", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\1.jpg"},
+                {"Avocado Toast", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\3.jpg"},
+                {"Kibbeh", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\5.jpg"},
+                {"Burger", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\6.jpg"},
+                {"Sushi", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\7.jpg"},
+                {"Tabbouleh", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\8.jpg"},
+                {"Riz Au Djej", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\9.jpg"},
+                {"Grape Leaves", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\14.jpg"},
+                {"Mloukhiye", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\15.jpg"},
+                {"Zucchini", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\16.jpg"},
+                {"Cheese Rolls", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\19.jpg"},
+                {"Spicy Potato", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\20.jpg"}
+
         };
 
         populateRecipeGrid(saltyPageRoot, recipes, primaryStage, secondScene);
@@ -299,6 +354,7 @@ public class HelloApplication extends Application {
 
         VBox rootWithBack = new VBox();
         Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-font-size: 14px;");
         backButton.setOnAction(e -> primaryStage.setScene(secondScene));
         rootWithBack.getChildren().addAll(backButton, scrollPane);
 
@@ -311,15 +367,15 @@ public class HelloApplication extends Application {
         sugarPageRoot.setStyle("-fx-padding: 10;");
 
         String[][] recipes = {
-                {"Smoothie", "file:///C:/Users/tonyy/OneDrive/Desktop/food/2.jpg"},
-                {"Greek Yogurt", "file:///C:/Users/tonyy/OneDrive/Desktop/food/4.jpg"},
-                {"Baklava", "file:///C:/Users/tonyy/OneDrive/Desktop/food/10.jpg"},
-                {"Strawberry Tart", "file:///C:/Users/tonyy/OneDrive/Desktop/food/11.jpg"},
-                {"Black Forest Cake", "file:///C:/Users/tonyy/OneDrive/Desktop/food/12.jpg"},
-                {"Maamoul", "file:///C:/Users/tonyy/OneDrive/Desktop/food/13.jpg"},
-                {"Barazek", "file:///C:/Users/tonyy/OneDrive/Desktop/food/17.jpg"},
-                {"Kaak", "file:///C:/Users/tonyy/OneDrive/Desktop/food/18.jpg"},
-                {"Donut", "file:///C:/Users/tonyy/OneDrive/Desktop/food/21.jpg"}
+                {"Smoothie","file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\2.jpg"},
+                {"Greek Yogurt", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\4.jpg"},
+                {"Baklava", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\10.jpg"},
+                {"Strawberry Tart", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\11.jpg"},
+                {"Black Forest Cake", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\12.jpg"},
+                {"Maamoul", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\13.jpg"},
+                {"Barazek", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\17.jpg"},
+                {"Kaak", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\18.jpg"},
+                {"Donut", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\21.jpg"}
         };
 
         populateRecipeGrid(sugarPageRoot, recipes, primaryStage, secondScene);
@@ -329,6 +385,7 @@ public class HelloApplication extends Application {
 
         VBox rootWithBack = new VBox();
         Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-font-size: 14px;");
         backButton.setOnAction(e -> primaryStage.setScene(secondScene));
         rootWithBack.getChildren().addAll(backButton, scrollPane);
 
@@ -342,15 +399,15 @@ public class HelloApplication extends Application {
         CocktailsPageRoot.setStyle("-fx-padding: 10;");
 
         String[][] recipes = {
-                {"Negroni", "file:///C:/Users/tonyy/OneDrive/Desktop/food/22.jpg"},
-                {"Paloma", "file:///C:/Users/tonyy/OneDrive/Desktop/food/24.jpg"},
-                {"Dirty Martini", "file:///C:/Users/tonyy/OneDrive/Desktop/food/25.jpg"},
-                {"whiskey Sour", "file:///C:/Users/tonyy/OneDrive/Desktop/food/26.jpg"},
-                {"Strawberry Daiquiri", "file:///C:/Users/tonyy/OneDrive/Desktop/food/27.jpg"},
-                {"Old Fashioned", "file:///C:/Users/tonyy/OneDrive/Desktop/food/28.jpg"},
-                {"White Russian", "file:///C:/Users/tonyy/OneDrive/Desktop/food/23.jpg"},
-                {"Cosmopolitan", "file:///C:/Users/tonyy/OneDrive/Desktop/food/30.jpg"},
-                {"Daiquiri", "file:///C:/Users/tonyy/OneDrive/Desktop/food/31.jpg"}
+                {"Negroni", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\22.jpg"},
+                {"Paloma", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\24.jpg"},
+                {"Dirty Martini", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\25.jpg"},
+                {"whiskey Sour", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\26.jpg"},
+                {"Strawberry Daiquiri", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\27.jpg"},
+                {"Old Fashioned", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\28.jpg"},
+                {"White Russian", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\23.jpg"},
+                {"Cosmopolitan", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\30.jpg"},
+                {"Daiquiri", "file:C:\\Users\\Lenovo Ideapad 3\\Desktop\\Workshop project  CSC266\\31.jpg"}
         };
 
         populateRecipeGrid(CocktailsPageRoot, recipes, primaryStage, secondScene);
@@ -360,6 +417,7 @@ public class HelloApplication extends Application {
 
         VBox rootWithBack = new VBox();
         Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #F7D9BC; -fx-text-fill: black; -fx-font-size: 14px;");
         backButton.setOnAction(e -> primaryStage.setScene(secondScene));
         rootWithBack.getChildren().addAll(backButton, scrollPane);
 
@@ -673,7 +731,7 @@ public class HelloApplication extends Application {
         return recipeBox;
     }
 
-   
+
 
     private void deleteRecipe(int index, Stage primaryStage, Scene previousScene) {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
@@ -741,7 +799,7 @@ public class HelloApplication extends Application {
     }
 
 
-    // Keep only this main method
+
     public static void main(String[] args) {
         launch(args);
     }}

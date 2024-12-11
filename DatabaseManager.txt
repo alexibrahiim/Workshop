@@ -9,7 +9,6 @@ public class DatabaseManager {
     private static final String PASSWORD = "123456";
 
     private static Connection connection = null;
-
     // Initialize connection
     public static void connect() throws SQLException {
         try {
